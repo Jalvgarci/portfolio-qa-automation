@@ -8,6 +8,8 @@ def test_obtener_usuario():
     assert datos["data"]["id"] == 2
     assert "email" in datos["data"]
 
+
+# crear un usuario
 def test_crear_usuario():
     datos_nuevos = {
         "name": "Jaime",
@@ -21,4 +23,3 @@ def test_crear_usuario():
     assert resultado["name"] == "Jaime"
     assert resultado["job"] == "QA Automation Engineer"
     assert "id" in resultado
-    

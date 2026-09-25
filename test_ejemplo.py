@@ -12,3 +12,9 @@ def test_marcar_checkbox(page: Page):
     checkbox.check()
     expect(checkbox).to_be_checked()
 
+def test_login_formulario(page: Page):
+    page.goto("https://the-internet.herokuapp.com/login")
+    page.fill("#username", "tomsmith")
+    page.fill("#password", "SuperSecretPassword!")
+    page.click("button[type='submit']")
+    expect(page.locator(".flash.success")).to_be_visible()

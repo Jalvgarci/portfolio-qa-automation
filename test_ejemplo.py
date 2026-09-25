@@ -18,3 +18,9 @@ def test_login_formulario(page: Page):
     page.fill("#password", "SuperSecretPassword!")
     page.click("button[type='submit']")
     expect(page.locator(".flash.success")).to_be_visible()
+
+def test_seleccionar_dropdown(page: Page):
+    page.goto("https://the-internet.herokuapp.com/dropdown")
+    page.select_option("#dropdown", "2")
+    seleccionado = page.locator("#dropdown").input_value()
+    assert seleccionado == "2"

@@ -23,3 +23,9 @@ def test_crear_usuario():
     assert resultado["name"] == "Jaime"
     assert resultado["job"] == "QA Automation Engineer"
     assert "id" in resultado
+
+def test_usuario_no_existe():
+    respuesta = requests.get("https://reqres.in/api/users/23")
+
+    assert respuesta.status_code == 404
+    assert respuesta.json() == {}

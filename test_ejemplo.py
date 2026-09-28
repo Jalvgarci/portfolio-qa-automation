@@ -24,7 +24,7 @@ def test_seleccionar_dropdown(page: Page):
     page.select_option("#dropdown", "2")
     seleccionado = page.locator("#dropdown").input_value()
     assert seleccionado == "2"
-
+# otro ejemplo de Login. Aquí se pasa el usu/pass en la url
 def test_login2_formulario(page: Page):
     page.goto("https://admin:admin@the-internet.herokuapp.com/basic_auth")
     assert "Congratulations" in page.content()

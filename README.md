@@ -8,7 +8,7 @@
 
 ### Sobre el proyecto
 
-Portfolio de automatización de pruebas construido como parte de mi transición desde el testing funcional (más de 20 años de experiencia en análisis, diseño de planes de prueba y gestión de incidencias) hacia la automatización de pruebas de UI y API.
+Portfolio de automatización de pruebas construido como parte de mi transición desde el testing funcional ( 20 años de experiencia en análisis, diseño de planes de prueba y gestión de incidencias) hacia la automatización de pruebas de UI y API.
 
 Las pruebas se ejecutan contra aplicaciones públicas pensadas para practicar testing:
 
@@ -56,7 +56,7 @@ cd portfolio-qa-automation
 py -m venv venv
 venv\Scripts\activate
 
-pip install pytest playwright pytest-playwright requests
+pip install -r requirements.txt
 playwright install
 
 pytest -v
@@ -135,7 +135,7 @@ cd portfolio-qa-automation
 py -m venv venv
 venv\Scripts\activate
 
-pip install pytest playwright pytest-playwright requests
+pip install -r requirements.txt
 playwright install
 
 pytest -v

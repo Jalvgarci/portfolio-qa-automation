@@ -1,5 +1,5 @@
 # QA Automation Portfolio
-
+[![Tests](https://github.com/Jalvgarci/portfolio-qa-automation/actions/workflows/tests.yml/badge.svg)](https://github.com/Jalvgarci/portfolio-qa-automation/actions/workflows/tests.yml)
 🇪🇸 [Español](#-español) · 🇬🇧 [English](#-english)
 
 ---

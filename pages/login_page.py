@@ -9,7 +9,7 @@ class LoginPage:
         self.mensaje = page.locator("#flash")
 
     def abrir(self):
-        self.page.goto("https://the-internet.herokuapp.com/login")
+        self.page.goto("https://the-internet.herokuapp.com/login", timeout=60000)
 
     def login(self, usuario, clave):
         self.usuario.fill(usuario)

@@ -8,3 +8,6 @@ class CartPage:
 
     def numero_de_items(self):
         return self.items_carrito.count()
+
+    def ir_a_checkout(self):
+        self.boton_checkout.click()

@@ -11,4 +11,4 @@ def test_login_con_pom(page: Page, usuario, clave, mensaje):
     login = LoginPage(page)
     login.abrir()
     login.login(usuario, clave)
-    expect(login.mensaje).to_contain_text(mensaje)
+    expect(login.mensaje).to_contain_text(mensaje, timeout=10000)

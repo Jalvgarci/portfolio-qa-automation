@@ -10,8 +10,8 @@ from playwright.sync_api import Page, expect
 
 ])
 def test_login_varios_casos(page: Page, usuario, clave, mensaje):
-    page.goto("https://the-internet.herokuapp.com/login")
+    page.goto("https://the-internet.herokuapp.com/login", timeout=60000)
     page.locator("#username").fill(usuario)
     page.locator("#password").fill(clave)
     page.locator("button[type='submit']").click()
-    expect(page.locator("#flash")).to_contain_text(mensaje)
+    expect(page.locator("#flash")).to_contain_text(mensaje, timeout=10000)

@@ -1,30 +1,30 @@
 from playwright.sync_api import Page, expect
 
 def test_titulo_pagina(page: Page):
-    page.goto("https://the-internet.herokuapp.com/")
+    page.goto("https://the-internet.herokuapp.com/", timeout=60000)
     assert page.title() == "The Internet"
     
 
 
 def test_marcar_checkbox(page: Page):
-    page.goto("https://the-internet.herokuapp.com/checkboxes")
+    page.goto("https://the-internet.herokuapp.com/checkboxes", timeout=60000)
     checkbox = page.locator("#checkboxes input").nth(0)
     checkbox.check()
     expect(checkbox).to_be_checked()
 
 def test_login_formulario(page: Page):
-    page.goto("https://the-internet.herokuapp.com/login")
+    page.goto("https://the-internet.herokuapp.com/login", timeout=60000)
     page.fill("#username", "tomsmith")
     page.fill("#password", "SuperSecretPassword!")
     page.click("button[type='submit']")
-    expect(page.locator(".flash.success")).to_be_visible()
+    expect(page.locator(".flash.success")).to_be_visible(timeout=10000)
 
 def test_seleccionar_dropdown(page: Page):
-    page.goto("https://the-internet.herokuapp.com/dropdown")
+    page.goto("https://the-internet.herokuapp.com/dropdown", timeout=60000)
     page.select_option("#dropdown", "2")
     seleccionado = page.locator("#dropdown").input_value()
     assert seleccionado == "2"
 # otro ejemplo de Login. Aquí se pasa el usu/pass en la url
 def test_login2_formulario(page: Page):
-    page.goto("https://admin:admin@the-internet.herokuapp.com/basic_auth")
+    page.goto("https://admin:admin@the-internet.herokuapp.com/basic_auth", timeout=60000)
     assert "Congratulations" in page.content()

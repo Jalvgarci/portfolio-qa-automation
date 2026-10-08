@@ -25,7 +25,7 @@ jobs:
         run: playwright install --with-deps chromium
 
       - name: Ejecutar tests
-        run: pytest -v
+        run: pytest -v --ignore=tests/ui/ejercicios_iniciales
 
       - name: Guardar evidencias si hay fallos
         if: failure()

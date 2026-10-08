@@ -10,3 +10,7 @@ class InventoryPage:
 
     def ir_al_carrito(self):
         self.icono_carrito.click()
+
+    def ordenar_listado (self, ordenar_por_precio):
+        self.page.select_option('[data-test="product-sort-container"]', ordenar_por_precio)
+

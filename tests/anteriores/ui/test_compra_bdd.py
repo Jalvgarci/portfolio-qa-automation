@@ -1,11 +1,11 @@
 from pytest_bdd import scenarios, given, when, then
 from playwright.sync_api import Page, expect
-from pages.saucedemo_login_page import SauceDemoLoginPage
-from pages.inventory_page import InventoryPage
-from pages.cart_page import CartPage
-from pages.checkout_page import CheckoutPage
-from pages.menu_component import MenuComponent
-from pages.dynamic_catalog_page import DynamicCatalogPage
+from pages.anteriores.saucedemo_login_page import SauceDemoLoginPage
+from pages.anteriores.inventory_page import InventoryPage
+from pages.anteriores.cart_page import CartPage
+from pages.anteriores.checkout_page import CheckoutPage
+from pages.anteriores.menu_component import MenuComponent
+from pages.anteriores.dynamic_catalog_page import DynamicCatalogPage
 
 scenarios("features/compra.feature")
 

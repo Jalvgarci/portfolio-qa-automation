@@ -1,8 +1,8 @@
 import pytest
 from playwright.sync_api import Page, expect
-from pages.inventory_page import InventoryPage
-from pages.cart_page import CartPage
-from pages.checkout_page import CheckoutPage
+from pages.anteriores.inventory_page import InventoryPage
+from pages.anteriores.cart_page import CartPage
+from pages.anteriores.checkout_page import CheckoutPage
 
 @pytest.mark.parametrize("producto, cantidad_esperada", [
     ("sauce-labs-backpack", 1),

@@ -27,12 +27,11 @@ def test_alta_empleado(page: Page, usuario, clave, nombre_empleado, apellido1_em
     id_empleado = generar_id_empleado()
     crear_empleado.informar_id(id_empleado)
     crear_empleado.activar_creacion_usuario()
-    usuario = f"qa{id_empleado}"
-    clave = "Pass1234"
-    crear_empleado.informar_credenciales(usuario, clave)
+    usuario_nuevo = f"qa{id_empleado}"
+    clave_nueva = "Pass1234"
+    crear_empleado.informar_credenciales(usuario_nuevo, clave_nueva)
     crear_empleado.clicar_boton_save()
     expect(page).to_have_url(re.compile("viewPersonalDetails"), timeout=30000)
 
-#@pytest.mark.parametrize("usuario, clave", [("Admin", "admin123")])
-#def test_solicitar_vacaciones (page: Page, usuario, clave):
+
 

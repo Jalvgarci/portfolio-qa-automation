@@ -6,7 +6,7 @@ class OrangeLoginPage:
         self.usuario = page.locator('[placeholder="Username"]')
         self.clave = page.locator('[placeholder="Password"]')
         self.boton = page.get_by_role("button", name="Login")
-        #self.mensaje = page.locator("#flash")
+        
 
     def abrir(self):
         self.page.goto("https://opensource-demo.orangehrmlive.com/web/index.php/auth/login", timeout=60000)

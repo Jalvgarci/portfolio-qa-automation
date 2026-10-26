@@ -6,7 +6,7 @@ from pages.orange_sidebar import MenuLateralPage
 from pages.orange_pim_page import PimPage
 from pages.orange_leave_page import LeavePage
 from pages.orange_apply_leave_page import ApplyLeavePage
-
+from pages.orange_my_leave_page import MyLeavePage
 from pages.add_employee_page import AltaEmpleado
 from pages.orange_detalle_empleado import DetalleEmpleado
 from pages.orange_topbar import BarraSuperior
@@ -94,10 +94,17 @@ def solicitar_vacaciones(page: Page):
     expect(page).to_have_url(re.compile("leave"), timeout=30000)
     LeavePage(page).clic_apply()
     expect(page).to_have_url(re.compile("applyLeave"), timeout=30000)
-
     solicitud = ApplyLeavePage(page)
     solicitud.seleccionar_leave_type()
     solicitud.informar_fechas()
     expect(solicitud.fecha_fin).to_have_value(solicitud.fecha_hoy, timeout=30000)
     respuesta = solicitud.solicitar()
     assert respuesta.ok, f"La solicitud falló: {respuesta.status} {respuesta.url}"
+    
+@then("la solicitud figura pendiente de aprobación")
+def comprobar_solicitud(page: Page, contexto):
+    mis_ausencias = MyLeavePage(page)
+    mis_ausencias.abrir()
+    fila = mis_ausencias.fila_de(contexto["apellido"])
+    expect(fila).to_contain_text(contexto["tipo_ausencia"], timeout=30000)
+    expect(fila).to_contain_text("Pending Approval")

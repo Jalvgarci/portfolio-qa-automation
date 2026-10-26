@@ -7,6 +7,9 @@ from pages.orange_pim_page import PimPage
 from pages.add_employee_page import AltaEmpleado
 from utils.datos_prueba import generar_id_empleado
 
+@pytest.fixture
+def contexto():
+    return {}
 
 @pytest.fixture
 def empleado_creado(page: Page):

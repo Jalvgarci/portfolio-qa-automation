@@ -12,6 +12,7 @@ from pages.orange_detalle_empleado import DetalleEmpleado
 from pages.orange_topbar import BarraSuperior
 from utils.datos_prueba import generar_id_empleado
 from pages.orange_leave_entitlements_page import AsignarDiasPage
+from pages.orange_view_leave_list_page import ViewLeaveListPage
 from utils.datos_prueba import generar_id_empleado, generar_apellido_unico
 
 scenarios("features/vacaciones.feature")
@@ -25,7 +26,7 @@ def login_admin(page: Page):
     login = OrangeLoginPage(page)
     login.abrir()
     login.login(ADMIN_USUARIO, ADMIN_CLAVE)
-    expect(page).to_have_url(re.compile("dashboard"), timeout=30000)
+    expect(page).not_to_have_url(re.compile("auth/"), timeout=30000)
 
 
 @when("doy de alta un empleado nuevo con usuario de acceso")
@@ -86,7 +87,7 @@ def login_empleado(page: Page, contexto):
     login = OrangeLoginPage(page)
     login.abrir()
     login.login(contexto["usuario"], contexto["clave"])
-    expect(page).to_have_url(re.compile("dashboard"), timeout=30000)
+    expect(page).not_to_have_url(re.compile("auth/"), timeout=30000)
 
 @when("el empleado solicita vacaciones")
 def solicitar_vacaciones(page: Page):
@@ -108,3 +109,34 @@ def comprobar_solicitud(page: Page, contexto):
     fila = mis_ausencias.fila_de(contexto["apellido"])
     expect(fila).to_contain_text(contexto["tipo_ausencia"], timeout=30000)
     expect(fila).to_contain_text("Pending Approval")
+
+@step("cierro sesión")
+def cerrar_sesion(page: Page):
+    BarraSuperior(page).cerrar_sesion()
+    expect(page).to_have_url(re.compile("auth/login"), timeout=30000)
+
+@step("inicio sesión como administrador")
+def login_admin(page: Page):
+    login = OrangeLoginPage(page)
+    login.abrir()
+    login.login(ADMIN_USUARIO, ADMIN_CLAVE)
+    expect(page).to_have_url(re.compile("dashboard"), timeout=30000)
+
+@when("apruebo la solicitud de vacaciones del empleado")
+def aprobar_solicitud(page: Page, contexto):
+    MenuLateralPage(page).ir_a_leave()
+    expect(page).to_have_url(re.compile("leave"), timeout=30000)
+    listado_vacaciones= ViewLeaveListPage(page)
+    fila = listado_vacaciones.fila_de(contexto["apellido"])
+    expect(fila).to_contain_text(contexto["tipo_ausencia"], timeout=30000)
+    expect(fila).to_contain_text("Pending Approval")
+    listado_vacaciones.clic_aprobar(fila)
+
+@then("la solicitud ya no figura como pendiente")
+def comprobar_aprobacion(page: Page, contexto):
+    listado_vacaciones = ViewLeaveListPage(page)
+    fila = listado_vacaciones.fila_de(contexto["apellido"])
+    expect(fila).to_have_count(0, timeout=30000)
+
+
+

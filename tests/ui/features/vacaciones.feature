@@ -10,3 +10,8 @@ Feature: Solicitud y aprobación de vacaciones
     Then inicio sesión como empleado
     When el empleado solicita vacaciones
     Then la solicitud figura pendiente de aprobación
+    When cierro sesión
+    Given inicio sesión como administrador
+    When apruebo la solicitud de vacaciones del empleado
+    Then la solicitud ya no figura como pendiente
+    When cierro sesión

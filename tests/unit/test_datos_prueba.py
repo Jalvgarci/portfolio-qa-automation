@@ -2,7 +2,7 @@ from datetime import date
 
 import pytest
 
-from utils.datos_prueba import siguiente_dia_laborable
+from utils.datos_prueba import siguiente_dia_laborable, dia_laborable_futuro
 
 
 @pytest.mark.parametrize(
@@ -24,3 +24,24 @@ from utils.datos_prueba import siguiente_dia_laborable
 )
 def test_siguiente_dia_laborable(desde, esperado):
     assert siguiente_dia_laborable(desde) == esperado
+
+
+@pytest.mark.parametrize(
+    "desde, esperado",
+    [
+        (date(2026, 11, 23), date(2026, 11, 24)),  # lunes -> martes
+        (date(2026, 11, 27), date(2026, 11, 30)),  # viernes -> lunes
+        (date(2026, 11, 28), date(2026, 11, 30)),  # sábado -> lunes
+        (date(2026, 11, 29), date(2026, 11, 30)),  # domingo -> lunes
+        (date(2026, 12, 31), date(2027, 1, 1)),    # jueves -> viernes, cambiando de año
+    ],
+    ids=[
+        "lunes_pasa_a_martes",
+        "viernes_pasa_a_lunes",
+        "sabado_pasa_a_lunes",
+        "domingo_pasa_a_lunes",
+        "cambio_de_anio",
+    ],
+)
+def test_dia_laborable_futuro(desde, esperado):
+    assert dia_laborable_futuro(desde) == esperado

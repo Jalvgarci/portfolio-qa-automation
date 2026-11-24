@@ -35,7 +35,7 @@ El CI (`.github/workflows/tests.yml`, Python 3.14, ubuntu) ejecuta `pytest -v --
 ## Cosas a tener en cuenta
 
 - La demo es lenta: las comprobaciones usan `expect(...)` con `timeout=30000`, y `OrangeLoginPage.abrir` usa un timeout de 60 s en el `goto`. Mejor `expect` con una expresión regular de la URL o un texto visible que pausas fijas.
-- Campos de fecha: `ApplyLeavePage.informar_fechas(fecha)` recibe la fecha como parámetro, lee el `placeholder` del campo para construir el formato (no hay que escribir uno fijo) y devuelve el texto escrito. La fecha de las vacaciones la calcula `siguiente_dia_laborable()` de `utils/datos_prueba.py` (hoy, o el lunes siguiente si es fin de semana) y se guarda en `contexto["fecha_vacaciones"]`.
+- Campos de fecha: `ApplyLeavePage.informar_fechas(fecha)` recibe la fecha como parámetro, lee el `placeholder` del campo para construir el formato (no hay que escribir uno fijo) y devuelve el texto escrito. La fecha de las vacaciones es el primer día laborable a partir de mañana (`dia_laborable_futuro()` de `utils/datos_prueba.py`) y se guarda en `contexto["fecha_vacaciones"]`. Tiene que ser futura: OrangeHRM muestra una solicitud aprobada como "Scheduled" si su fecha es futura y como "Taken" si es hoy o ya pasó.
 ## Convenciones del proyecto (aprendidas con errores reales)
 
 ### Diseño

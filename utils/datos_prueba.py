@@ -15,3 +15,7 @@ def siguiente_dia_laborable(desde=None):
     while fecha.weekday() >= 5:      # 5 = sábado, 6 = domingo
         fecha += timedelta(days=1)
     return fecha
+
+def dia_laborable_futuro(desde=None):
+    hoy = desde or date.today()
+    return siguiente_dia_laborable(hoy + timedelta(days=1))

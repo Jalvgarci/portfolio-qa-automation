@@ -9,4 +9,9 @@ class ViewLeaveListPage:
         return self.page.locator(".oxd-table-row").filter(has_text=apellido)
 
     def clic_aprobar(self, fila):
-        fila.get_by_role("button", name="Approve").click()
+        with self.page.expect_response(
+            lambda r: "leave-requests/" in r.url and r.request.method == "PUT",
+            timeout=30000,
+        ) as info:
+            fila.get_by_role("button", name="Approve").click()
+        return info.value

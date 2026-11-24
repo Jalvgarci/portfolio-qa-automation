@@ -1,6 +1,7 @@
 import random
 import time
 import string
+from datetime import date, timedelta
 
 
 def generar_id_empleado():
@@ -9,4 +10,8 @@ def generar_id_empleado():
 def generar_apellido_unico():
     return "Test" + "".join(random.choices(string.ascii_lowercase, k=6))
 
-   
+def siguiente_dia_laborable(desde=None):
+    fecha = desde or date.today()
+    while fecha.weekday() >= 5:      # 5 = sábado, 6 = domingo
+        fecha += timedelta(days=1)
+    return fecha

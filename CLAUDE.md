@@ -28,20 +28,21 @@ El CI (`.github/workflows/tests.yml`, Python 3.14, ubuntu) ejecuta `pytest -v --
 ## Arquitectura
 
 - **`pages/`**: una clase por pantalla o componente (`OrangeLoginPage`, `MenuLateralPage` para el menú lateral, `BarraSuperior` para la barra superior y el cierre de sesión, `PimPage`, `AltaEmpleado`, `AsignarDiasPage`, `ApplyLeavePage`, `MyLeavePage`, `ViewLeaveListPage`, ...). Los locators se definen en `__init__` y los métodos son verbos en español (`abrir`, `informar_*`, `clic_*`, `seleccionar_*`). Las filas de las tablas se localizan con `.oxd-table-row` filtrando por el apellido único del empleado (`fila_de(apellido)`). Los métodos que envían datos al servidor envuelven el clic en `page.expect_response(...)` y devuelven la respuesta, para que el test pueda comprobar `respuesta.ok`.
-- **`tests/ui/features/vacaciones.feature`** + **`tests/ui/test_vacaciones_bdd.py`**: el escenario BDD principal, de principio a fin. El administrador da de alta un empleado con usuario de acceso → le asigna días de vacaciones → el empleado inicia sesión y solicita vacaciones → la solicitud aparece como "Pending Approval" en My Leave → el administrador la aprueba en View Leave List. Los pasos comparten datos a través del fixture `contexto`, un diccionario definido en `tests/ui/conftest.py`: `id_empleado`, `apellido`, `usuario`, `clave`, `tipo_ausencia`, `dias`. Los pasos que se repiten ("inicio sesión como administrador", "cierro sesión") usan `@step`.
+- **`tests/ui/features/vacaciones.feature`** + **`tests/ui/test_vacaciones_bdd.py`**: el escenario BDD principal, de principio a fin. El administrador da de alta un empleado con usuario de acceso → le asigna días de vacaciones → el empleado inicia sesión y solicita vacaciones → la solicitud aparece como "Pending Approval" en My Leave → el administrador la aprueba en View Leave List. Los pasos comparten datos a través del fixture `contexto`, un diccionario definido en `tests/ui/conftest.py`: `id_empleado`, `apellido`, `usuario`, `clave`, `tipo_ausencia`, `dias`, `fecha_vacaciones`. Los pasos que se repiten ("inicio sesión como administrador", "cierro sesión") usan `@step`.
 - **`utils/datos_prueba.py`**: genera datos de prueba únicos (`generar_id_empleado`, `generar_apellido_unico`). La demo es compartida y se reinicia periódicamente, así que cada ejecución tiene que crear sus propios datos con nombres únicos en lugar de depender de registros existentes.
 - `tests/ui/test_orange_admin.py`, `tests/ui/test_orange_empleado.py` y los fixtures `empleado_creado` / `pagina_empleado` son versiones anteriores, sin BDD, de partes del mismo flujo.
 
 ## Cosas a tener en cuenta
 
 - La demo es lenta: las comprobaciones usan `expect(...)` con `timeout=30000`, y `OrangeLoginPage.abrir` usa un timeout de 60 s en el `goto`. Mejor `expect` con una expresión regular de la URL o un texto visible que pausas fijas.
-- Campos de fecha: `ApplyLeavePage.informar_fechas` lee el `placeholder` del campo para construir el formato de fecha; no hay que escribir uno fijo.
+- Campos de fecha: `ApplyLeavePage.informar_fechas(fecha)` recibe la fecha como parámetro, lee el `placeholder` del campo para construir el formato (no hay que escribir uno fijo) y devuelve el texto escrito. La fecha de las vacaciones la calcula `siguiente_dia_laborable()` de `utils/datos_prueba.py` (hoy, o el lunes siguiente si es fin de semana) y se guarda en `contexto["fecha_vacaciones"]`.
 ## Convenciones del proyecto (aprendidas con errores reales)
 
 ### Diseño
 - Un Page Object por pantalla real. Lo común a todas las pantallas (menú lateral, barra superior) va en su propio componente.
 - Los datos de prueba se generan una sola vez por escenario, se guardan en `contexto` y se pasan como argumentos. Los Page Objects no generan ni fijan datos (por ejemplo, el tipo de ausencia se pasa como parámetro).
 - Cada test o paso `Then` necesita una comprobación real con `expect`. Un test sin comprobación pasa en verde sin probar nada. Que algo desaparezca de pantalla no prueba que se hizo lo correcto.
+- Sin tildes ni ñ en nombres de funciones, tests e ids de parametrización.
 
 ### Selectores
 - Preferencia: `data-test`, luego `get_by_role` / `get_by_label` / `get_by_placeholder`, y por último `#id` o `.clase`.

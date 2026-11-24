@@ -1,5 +1,4 @@
 from playwright.sync_api import Page
-from datetime import date
 class ApplyLeavePage:
     def __init__(self, page: Page):
         self.page = page
@@ -13,7 +12,7 @@ class ApplyLeavePage:
         self.desplegar_leave_type.click()
         self.leave_type.click()
 
-    def informar_fechas(self):
+    def informar_fechas(self, fecha):
         formato_pantalla = self.fecha_inicio.get_attribute("placeholder")
         formato_python = (
             formato_pantalla
@@ -21,9 +20,10 @@ class ApplyLeavePage:
             .replace("mm", "%m")
             .replace("dd", "%d")
         )
-        self.fecha_hoy = date.today().strftime(formato_python)
-        self.fecha_inicio.fill(self.fecha_hoy)
+        texto_fecha = fecha.strftime(formato_python)
+        self.fecha_inicio.fill(texto_fecha)
         self.fecha_inicio.press("Tab")
+        return texto_fecha
 
     def solicitar(self):
         with self.page.expect_response(

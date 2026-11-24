@@ -13,7 +13,7 @@ from pages.orange_topbar import BarraSuperior
 from utils.datos_prueba import generar_id_empleado
 from pages.orange_leave_entitlements_page import AsignarDiasPage
 from pages.orange_view_leave_list_page import ViewLeaveListPage
-from utils.datos_prueba import generar_id_empleado, generar_apellido_unico
+from utils.datos_prueba import generar_id_empleado, generar_apellido_unico, siguiente_dia_laborable
 
 scenarios("features/vacaciones.feature")
 
@@ -90,15 +90,17 @@ def login_empleado(page: Page, contexto):
     expect(page).not_to_have_url(re.compile("auth/"), timeout=30000)
 
 @when("el empleado solicita vacaciones")
-def solicitar_vacaciones(page: Page):
+def solicitar_vacaciones(page: Page, contexto):
+    contexto["fecha_vacaciones"] = siguiente_dia_laborable()
+
     MenuLateralPage(page).ir_a_leave()
     expect(page).to_have_url(re.compile("leave"), timeout=30000)
     LeavePage(page).clic_apply()
     expect(page).to_have_url(re.compile("applyLeave"), timeout=30000)
     solicitud = ApplyLeavePage(page)
     solicitud.seleccionar_leave_type()
-    solicitud.informar_fechas()
-    expect(solicitud.fecha_fin).to_have_value(solicitud.fecha_hoy, timeout=30000)
+    texto_fecha = solicitud.informar_fechas(contexto["fecha_vacaciones"])
+    expect(solicitud.fecha_fin).to_have_value(texto_fecha, timeout=30000)
     respuesta = solicitud.solicitar()
     assert respuesta.ok, f"La solicitud falló: {respuesta.status} {respuesta.url}"
     

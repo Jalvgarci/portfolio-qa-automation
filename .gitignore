@@ -4,3 +4,4 @@ __pycache__/
 test-results/
 report.html
 CLAUDE.local.md
+datos_ultima_ejecucion.txt

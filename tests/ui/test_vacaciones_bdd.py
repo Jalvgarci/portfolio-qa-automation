@@ -33,6 +33,8 @@ def alta_empleado(page: Page, contexto):
     id_empleado = generar_id_empleado()
     contexto["id_empleado"] = id_empleado
     contexto["apellido"] = generar_apellido_unico()
+    contexto["nombre"] = "Zacarias"
+    contexto["segundo_nombre"] = "Ronalda"
     contexto["usuario"] = f"qa{id_empleado}"
     contexto["clave"] = "Pass1234"
 
@@ -42,7 +44,9 @@ def alta_empleado(page: Page, contexto):
     expect(page).to_have_url(re.compile("addEmployee"), timeout=30000)
 
     alta = AltaEmpleado(page)
-    alta.informar_datos_empleado("Zacarias", "Ronalda", contexto["apellido"])
+    alta.informar_datos_empleado(
+        contexto["nombre"], contexto["segundo_nombre"], contexto["apellido"]
+    )
     alta.informar_id(id_empleado)
     alta.activar_creacion_usuario()
     alta.informar_credenciales(contexto["usuario"], contexto["clave"])
